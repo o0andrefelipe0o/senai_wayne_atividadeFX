@@ -2,6 +2,8 @@ package com.javafx.atividade_fx.DAO;
 
 import com.javafx.atividade_fx.model.Funcionario;
 import com.javafx.atividade_fx.bancoDado.Conexão;
+import java.util.HashMap;
+import java.util.Map;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -103,5 +105,24 @@ public class FuncionarioDAO {
             e.printStackTrace();
         }
         return funcionarios;
+    }
+
+    public Map<String, Integer> countFuncionariosPorDepartamento() throws SQLException {
+        Map<String, Integer> data = new HashMap<>();
+        String sql = "SELECT departamento, COUNT(*) as total FROM funcionarios GROUP BY departamento";
+
+        try (Connection conn = Conexão.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+
+            while (rs.next()) {
+                String departamento = rs.getString("departamento");
+                int total = rs.getInt("total");
+                if (departamento != null && !departamento.isEmpty()) {
+                    data.put(departamento, total);
+                }
+            }
+        }
+        return data;
     }
 }

@@ -17,7 +17,7 @@
                                 <MenuItem mnemonicParsing="false" onAction="#handleAbrirAgenda" text="Agenda de Eventos" />
                                 <MenuItem onAction="#handleAbrirCadastroFerias" text="Cadastrar Férias" />
                                 <MenuItem onAction="#handleAbrirListaFerias" text="Ver Histórico de Férias" />
-                                <MenuItem mnemonicParsing="false" text="Opção 2" />
+                                <MenuItem onAction="#handleAbrirRelatorioGrafico" text="Gráfico por Departamento" />
                                 <MenuItem mnemonicParsing="false" text="Sair" />
                             </items>
                         </MenuButton>
@@ -61,9 +61,8 @@
     <bottom>
         <HBox alignment="CENTER_RIGHT" prefWidth="200.0" spacing="10.0" BorderPane.alignment="CENTER">
             <children>
-                <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="83.0" text="Grafico" />
-                <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="83.0" text="Exportar" />
-                <Region prefHeight="40.0" prefWidth="337.0" />
+                <Button fx:id="exportarPdfButton" mnemonicParsing="false" onAction="#handleExportarPdf" prefHeight="26.0" prefWidth="83.0" text="Exportar" />
+                <Region prefHeight="40.0" prefWidth="436.0" />
                 <Button fx:id="newButton" mnemonicParsing="false" onAction="#handleNewEmployee" text="Novo Funcionário" />
                 <Button fx:id="editButton" mnemonicParsing="false" onAction="#handleEditEmployee" text="Editar" />
                 <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#handleDeleteEmployee" text="Excluir" />

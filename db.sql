@@ -29,12 +29,6 @@ CREATE TABLE IF NOT EXISTS ferias (
 );
 
 
-DROP USER IF EXISTS 'admin'@'localhost';
 
-CREATE USER IF NOT EXISTS 'admin'@'localhost' IDENTIFIED BY '1234567';
-
-GRANT ALL PRIVILEGES ON sistema_login.* TO 'admin'@'localhost';
-
-FLUSH PRIVILEGES;
 
 SELECT*FROM funcionarios;

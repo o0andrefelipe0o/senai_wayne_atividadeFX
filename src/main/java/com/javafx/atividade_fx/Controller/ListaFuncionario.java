@@ -18,6 +18,15 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import java.time.format.DateTimeFormatter;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import javafx.stage.FileChooser;
+import java.io.File;
+import javafx.collections.ObservableList;
+
 public class ListaFuncionario {
 
     @FXML private TableView<Funcionario> employeeTableView;
@@ -29,6 +38,7 @@ public class ListaFuncionario {
     @FXML private TableColumn<Funcionario, String> cargoColumn;
     @FXML private TableColumn<Funcionario, LocalDate> dataAdmissaoColumn;
     @FXML private TextField searchField;
+    @FXML private Button exportarPdfButton;
 
     private final FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
     private List<Funcionario> todosOsFuncionarios;
@@ -178,6 +188,123 @@ public class ListaFuncionario {
 
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+    @FXML
+    private void handleAbrirRelatorioGrafico() {
+        try {
+            // Supondo que o nome do seu FXML seja "relatorio_grafico.fxml"
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/javafx/atividade_fx/relatorio_grafico.fxml"));
+            Stage stage = new Stage();
+            stage.setTitle("Relatório Gráfico");
+            stage.setScene(new Scene(loader.load()));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.show(); // Usamos show() para permitir interação com a janela principal
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void handleExportarPdf() {
+        // 1. Obter a lista de funcionários
+        ObservableList<Funcionario> funcionarios = employeeTableView.getItems();
+        if (funcionarios.isEmpty()) {
+            new Alert(Alert.AlertType.WARNING, "Não há dados para exportar.").showAndWait();
+            return;
+        }
+
+        // 2. Abrir o diálogo para salvar o arquivo
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Salvar Relatório PDF");
+        fileChooser.setInitialFileName("Relatorio dos Funcionarios.pdf");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Arquivos PDF (*.pdf)", "*.pdf"));
+        File file = fileChooser.showSaveDialog(employeeTableView.getScene().getWindow());
+
+        if (file != null) {
+            // 3. Gerar o PDF com o novo layout
+            try (PDDocument document = new PDDocument()) {
+                PDPage page = new PDPage();
+                document.addPage(page);
+                PDPageContentStream contentStream = new PDPageContentStream(document, page);
+
+                // --- Configurações Iniciais ---
+                float margin = 50;
+                float yStart = page.getMediaBox().getHeight() - margin;
+                float yPosition = yStart;
+                float leading = 15f; // Espaçamento entre linhas
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+                // --- Escrever o Cabeçalho do Documento ---
+                contentStream.beginText();
+                contentStream.setFont(PDType1Font.HELVETICA_BOLD, 18);
+                contentStream.newLineAtOffset(margin, yPosition);
+                contentStream.showText("Relatório Completo de Funcionários");
+                contentStream.endText();
+                yPosition -= 40; // Espaço maior após o título
+
+                // --- Escrever os Dados de Cada Funcionário ---
+                for (Funcionario f : funcionarios) {
+                    // Checar se precisa de uma nova página ANTES de escrever o registro
+                    // 90 é uma estimativa do espaço vertical que cada "ficha" ocupa
+                    if (yPosition < margin + 90) {
+                        contentStream.close();
+                        page = new PDPage();
+                        document.addPage(page);
+                        contentStream = new PDPageContentStream(document, page);
+                        yPosition = yStart; // Resetar a posição Y
+                    }
+
+                    // Escreve os dados do funcionário em formato de ficha
+                    contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
+                    contentStream.beginText();
+                    contentStream.newLineAtOffset(margin, yPosition);
+                    contentStream.showText(f.getId() + ": " + f.getNomeCompleto());
+                    contentStream.endText();
+                    yPosition -= leading * 1.5; // Espaço após o nome
+
+                    contentStream.setFont(PDType1Font.HELVETICA, 10);
+
+                    String dataAdmissaoFormatada = f.getDataAdmissao() != null ? formatter.format(f.getDataAdmissao()) : "N/A";
+                    String dataNascimentoFormatada = f.getDataNascimento() != null ? formatter.format(f.getDataNascimento()) : "N/A";
+
+                    // Linha 1: CPF e E-mail
+                    contentStream.beginText();
+                    contentStream.newLineAtOffset(margin, yPosition);
+                    contentStream.showText("CPF: " + f.getCpf() + "  |  E-mail: " + f.getEmail());
+                    contentStream.endText();
+                    yPosition -= leading;
+
+                    // Linha 2: Cargo e Departamento
+                    contentStream.beginText();
+                    contentStream.newLineAtOffset(margin, yPosition);
+                    contentStream.showText("Cargo: " + f.getCargo() + "  |  Departamento: " + f.getDepartamento());
+                    contentStream.endText();
+                    yPosition -= leading;
+
+                    // Linha 3: Datas
+                    contentStream.beginText();
+                    contentStream.newLineAtOffset(margin, yPosition);
+                    contentStream.showText("Data de Admissão: " + dataAdmissaoFormatada + "  |  Data de Nascimento: " + dataNascimentoFormatada);
+                    contentStream.endText();
+                    yPosition -= leading;
+
+                    // Linha separadora
+                    contentStream.moveTo(margin, yPosition);
+                    contentStream.lineTo(page.getMediaBox().getWidth() - margin, yPosition);
+                    contentStream.stroke();
+                    yPosition -= leading; // Espaço extra entre os funcionários
+                }
+
+                contentStream.close();
+                document.save(file);
+
+                new Alert(Alert.AlertType.INFORMATION, "Relatório PDF gerado com sucesso!").showAndWait();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                new Alert(Alert.AlertType.ERROR, "Erro ao gerar o PDF.").showAndWait();
+            }
         }
     }
 }
