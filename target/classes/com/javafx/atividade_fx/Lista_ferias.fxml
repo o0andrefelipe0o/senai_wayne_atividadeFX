@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.javafx.atividade_fx.Controller.ListaFerias"
+            prefHeight="400.0" prefWidth="600.0">
+
+        <children>
+            <Label layoutX="20" layoutY="20" text="Histórico de Férias"/>
+            <TableView fx:id="tabelaFerias" layoutX="20" layoutY="50" prefWidth="760" prefHeight="320">
+                <columns>
+                    <TableColumn fx:id="colNome" text="Funcionário" prefWidth="150"/>
+                    <TableColumn fx:id="colInicio" text="Início" prefWidth="150"/>
+                    <TableColumn fx:id="colFim" text="Fim" prefWidth="150"/>
+                    <TableColumn fx:id="colObs" text="Observações" prefWidth="310"/>
+                </columns>
+            </TableView>
+        </children>
+</AnchorPane>

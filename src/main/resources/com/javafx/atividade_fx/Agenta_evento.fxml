@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.javafx.atividade_fx.Controller.AgentaEvento">
+
+    <children>
+        <VBox alignment="CENTER" prefHeight="360.0" prefWidth="573.0" spacing="10.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="20.0">
+            <children>
+                <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Agenda de Eventos dos Funcionários" />
+                <TableView fx:id="tabelaEventos" prefHeight="287.0" prefWidth="562.0">
+                    <columns>
+                        <TableColumn fx:id="colNome" prefWidth="140.0" text="Funcionário" />
+                        <TableColumn fx:id="colAdmissao" prefWidth="140.0" text="Admissão" />
+                        <TableColumn fx:id="colAniversario" prefWidth="140.0" text="Aniversário" />
+                        <TableColumn fx:id="colFerias" prefWidth="140.0" text="Férias" />
+                    </columns>
+                </TableView>
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>

@@ -4,8 +4,8 @@ USE wayne_enterprises_db;
 
 CREATE TABLE IF NOT EXISTS funcionarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    usuario VARCHAR(100) NOT NULL,
-    senha VARCHAR(100) NOT NULL,
+    usuario VARCHAR(100),
+    senha VARCHAR(100),
     nome_completo VARCHAR(255) NOT NULL,
     cpf VARCHAR(14) NOT NULL UNIQUE,
     cargo VARCHAR(100),
@@ -14,6 +14,16 @@ CREATE TABLE IF NOT EXISTS funcionarios (
     data_admissao DATE NOT NULL,
     data_nascimento DATE NOT NULL
 );
+
+CREATE TABLE ferias (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    data_inicio DATE NOT NULL,
+    data_fim DATE NOT NULL,
+    observacao TEXT,
+    funcionario_id INT NOT NULL,
+    FOREIGN KEY (funcionario_id) REFERENCES funcionarios(id) ON DELETE CASCADE
+);
+
 
 DROP USER IF EXISTS 'admin'@'localhost';
 

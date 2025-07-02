@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.javafx.atividade_fx.Controller.ListaFuncionario">
+    <top>
+        <VBox prefWidth="100.0" spacing="10.0" BorderPane.alignment="CENTER">
+            <children>
+                <HBox>
+                    <children>
+
+                        <MenuButton mnemonicParsing="false" text="Menu">
+                            <items>
+                                <MenuItem mnemonicParsing="false" onAction="#handleAbrirAgenda" text="Agenda de Eventos" />
+                                <MenuItem onAction="#handleAbrirCadastroFerias" text="Cadastrar Férias" />
+                                <MenuItem onAction="#handleAbrirListaFerias" text="Ver Histórico de Férias" />
+                                <MenuItem mnemonicParsing="false" text="Opção 2" />
+                                <MenuItem mnemonicParsing="false" text="Sair" />
+                            </items>
+                        </MenuButton>
+                        <Region prefHeight="40.0" prefWidth="90.0" />
+                        <Label prefHeight="40.0" prefWidth="568.0" text="Gerenciamento de Funcionários">
+                            <font>
+                                <Font name="System Bold" size="28.0" />
+                            </font>
+                        </Label>
+
+                    </children>
+                </HBox>
+                <HBox alignment="CENTER_LEFT" prefHeight="26.0" prefWidth="604.0" spacing="10.0">
+                    <children>
+                        <TextField fx:id="searchField" prefHeight="26.0" prefWidth="582.0" promptText="Buscar por nome ou CPF..." HBox.hgrow="ALWAYS" />
+                        <Button fx:id="searchButton" mnemonicParsing="false" onAction="#handleSearch" prefHeight="26.0" prefWidth="51.0" text="Buscar" />
+                    </children>
+                </HBox>
+            </children>
+            <padding>
+                <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+            </padding>
+        </VBox>
+    </top>
+    <center>
+        <TableView fx:id="employeeTableView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <columns>
+                <TableColumn fx:id="idColumn" prefWidth="50.0" text="ID" />
+                <TableColumn fx:id="nomeColumn" prefWidth="200.0" text="Nome Completo" />
+                <TableColumn fx:id="cpfColumn" prefWidth="120.0" text="CPF" />
+                <TableColumn fx:id="emailColumn" prefWidth="180.0" text="E-mail" />
+                <TableColumn fx:id="departamentoColumn" prefWidth="120.0" text="Departamento" />
+                <TableColumn fx:id="cargoColumn" prefWidth="120.0" text="Cargo" />
+                <TableColumn fx:id="dataAdmissaoColumn" prefWidth="130.0" text="Data de Admissão" />
+            </columns>
+            <BorderPane.margin>
+                <Insets bottom="10.0" left="15.0" right="15.0" />
+            </BorderPane.margin>
+        </TableView>
+    </center>
+    <bottom>
+        <HBox alignment="CENTER_RIGHT" prefWidth="200.0" spacing="10.0" BorderPane.alignment="CENTER">
+            <children>
+                <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="83.0" text="Grafico" />
+                <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="83.0" text="Exportar" />
+                <Region prefHeight="40.0" prefWidth="337.0" />
+                <Button fx:id="newButton" mnemonicParsing="false" onAction="#handleNewEmployee" text="Novo Funcionário" />
+                <Button fx:id="editButton" mnemonicParsing="false" onAction="#handleEditEmployee" text="Editar" />
+                <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#handleDeleteEmployee" text="Excluir" />
+            </children>
+            <padding>
+                <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+            </padding>
+        </HBox>
+    </bottom>
+</BorderPane>
