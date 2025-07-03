@@ -17,4 +17,16 @@ public class Conexão {
             throw new RuntimeException("Erro ao conectar ao banco de dados", e);
         }
     }
+
+    public static String getUsuario() {
+        return "root";
+    }
+
+    public static String getSenha() {
+        return "";
+    }
+
+    public static String getNomeBanco() {
+        return "wayne_enterprises_db";
+    }
 }

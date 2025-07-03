@@ -15,9 +15,10 @@
                         <MenuButton mnemonicParsing="false" text="Menu">
                             <items>
                                 <MenuItem mnemonicParsing="false" onAction="#handleAbrirAgenda" text="Agenda de Eventos" />
-                                <MenuItem onAction="#handleAbrirCadastroFerias" text="Cadastrar Férias" />
+                                <MenuItem onAction="#handleAbrirCadastroFerias" text="Agendar Férias" />
                                 <MenuItem onAction="#handleAbrirListaFerias" text="Ver Histórico de Férias" />
                                 <MenuItem onAction="#handleAbrirRelatorioGrafico" text="Gráfico por Departamento" />
+                                <MenuItem text="Backup / Restauração" onAction="#handleAbrirBackup"/>
                                 <MenuItem mnemonicParsing="false" text="Sair" />
                             </items>
                         </MenuButton>

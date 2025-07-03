@@ -307,4 +307,18 @@ public class ListaFuncionario {
             }
         }
     }
+    @FXML
+    private void handleAbrirBackup() {
+        try {
+            // Supondo que o FXML se chame "backup.fxml"
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/javafx/atividade_fx/backup.fxml"));
+            Stage stage = new Stage();
+            stage.setTitle("Backup e Restauração");
+            stage.setScene(new Scene(loader.load()));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
