@@ -19,7 +19,7 @@ public class Formulario {
     @FXML private TextField cargoField;
     @FXML private TextField departamentoField;
     @FXML private DatePicker dataAdmissaoPicker;
-    @FXML private DatePicker dataNascimentoPicker; // ADICIONADO: Campo para data de nascimento
+    @FXML private DatePicker dataNascimentoPicker;
     @FXML private Button saveButton;
 
     private final FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
@@ -34,7 +34,7 @@ public class Formulario {
             cargoField.setText(funcionario.getCargo());
             departamentoField.setText(funcionario.getDepartamento());
             dataAdmissaoPicker.setValue(funcionario.getDataAdmissao());
-            dataNascimentoPicker.setValue(funcionario.getDataNascimento()); // ADICIONADO: Popula a data de nascimento
+            dataNascimentoPicker.setValue(funcionario.getDataNascimento());
         }
     }
 
@@ -51,7 +51,7 @@ public class Formulario {
             this.funcionario.setCargo(cargoField.getText());
             this.funcionario.setDepartamento(departamentoField.getText());
             this.funcionario.setDataAdmissao(dataAdmissaoPicker.getValue());
-            this.funcionario.setDataNascimento(dataNascimentoPicker.getValue()); // ADICIONADO: Pega o valor da data de nascimento
+            this.funcionario.setDataNascimento(dataNascimentoPicker.getValue());
 
             if (this.funcionario.getId() == 0) {
                 funcionarioDAO.save(this.funcionario);
