@@ -14,6 +14,7 @@
 
                         <MenuButton mnemonicParsing="false" text="Menu">
                             <items>
+                                <MenuItem text="Aniversariantes do Mês" onAction="#handleAbrirAniversariantes" />
                                 <MenuItem mnemonicParsing="false" onAction="#handleAbrirAgenda" text="Agenda de Eventos" />
                                 <MenuItem onAction="#handleAbrirCadastroFerias" text="Agendar Férias" />
                                 <MenuItem onAction="#handleAbrirListaFerias" text="Ver Histórico de Férias" />

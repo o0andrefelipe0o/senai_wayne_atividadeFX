@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+
+<VBox spacing="10.0" alignment="TOP_CENTER" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.javafx.atividade_fx.Controller.AniversariantesController">
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20" />
+    </padding>
+    <Label text="Funcionários Aniversariantes do Mês" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
+    <TableView fx:id="tableAniversariantes" prefHeight="400" prefWidth="600">
+        <columns>
+            <TableColumn fx:id="nomeColumn" text="Nome" prefWidth="200" />
+            <TableColumn fx:id="departamentoColumn" text="Departamento" prefWidth="150" />
+            <TableColumn fx:id="dataNascimentoColumn" text="Data de Nascimento" prefWidth="150" />
+        </columns>
+    </TableView>
+</VBox>

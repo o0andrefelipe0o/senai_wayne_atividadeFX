@@ -342,4 +342,20 @@ public class ListaFuncionario {
             e.printStackTrace();
         }
     }
+
+    @FXML
+    private void handleAbrirAniversariantes() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/javafx/atividade_fx/Aniversariantes.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = new Stage();
+            stage.setTitle("Aniversariantes do Mês");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
