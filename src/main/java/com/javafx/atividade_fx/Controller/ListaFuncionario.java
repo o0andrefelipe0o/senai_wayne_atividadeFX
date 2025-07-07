@@ -54,7 +54,6 @@ public class ListaFuncionario {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/javafx/atividade_fx/Home.fxml"));
             Parent root = loader.load();
 
-            // Alternativa mais segura
             Stage stage = (Stage) exportarPdfButton.getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.setTitle("Wayne Enterprises - Início");
