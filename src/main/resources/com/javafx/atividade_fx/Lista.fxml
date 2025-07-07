@@ -19,7 +19,7 @@
                                 <MenuItem onAction="#handleAbrirListaFerias" text="Ver Histórico de Férias" />
                                 <MenuItem onAction="#handleAbrirRelatorioGrafico" text="Gráfico por Departamento" />
                                 <MenuItem text="Backup / Restauração" onAction="#handleAbrirBackup"/>
-                                <MenuItem mnemonicParsing="false" text="Sair" />
+                                <MenuItem mnemonicParsing="false" text="Sair" onAction="#handleSair" />
                             </items>
                         </MenuButton>
                         <Region prefHeight="40.0" prefWidth="90.0" />

@@ -5,7 +5,7 @@ USE wayne_enterprises_db;
 CREATE TABLE IF NOT EXISTS usuario (
     id INT AUTO_INCREMENT PRIMARY KEY,
     usuario VARCHAR(100),
-    senha VARCHAR(100),
+    senha VARCHAR(100)
 );
 
 CREATE TABLE IF NOT EXISTS funcionarios (
@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS ferias (
     FOREIGN KEY (funcionario_id) REFERENCES funcionarios(id) ON DELETE CASCADE
 );
 
-
-
+INSERT INTO usuario (usuario, senha)
+VALUES ('admin', 'admin');
 
 SELECT*FROM funcionarios;

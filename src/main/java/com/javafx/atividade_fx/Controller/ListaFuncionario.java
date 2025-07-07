@@ -3,11 +3,14 @@ package com.javafx.atividade_fx.Controller;
 import com.javafx.atividade_fx.DAO.FuncionarioDAO;
 import com.javafx.atividade_fx.model.Funcionario;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -39,9 +42,28 @@ public class ListaFuncionario {
     @FXML private TableColumn<Funcionario, LocalDate> dataAdmissaoColumn;
     @FXML private TextField searchField;
     @FXML private Button exportarPdfButton;
+    @FXML
+    private AnchorPane rootPane;
+
 
     private final FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
     private List<Funcionario> todosOsFuncionarios;
+
+    public void handleSair(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/javafx/atividade_fx/Home.fxml"));
+            Parent root = loader.load();
+
+            // Alternativa mais segura
+            Stage stage = (Stage) exportarPdfButton.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Wayne Enterprises - Início");
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     @FXML
     public void initialize() {
