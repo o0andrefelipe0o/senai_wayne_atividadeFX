@@ -7,6 +7,7 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -385,17 +386,18 @@ public class ListaFuncionario {
         }
     }
 
-    public void handleExcluirUsuario(ActionEvent actionEvent) {
+    public void handleExcluirUsuario(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/javafx/atividade_fx/ExcluirUsuario.fxml"));
             Parent root = loader.load();
 
+            // Pega o controller e injeta o usuário logado
             ExcluirUsuarioController controller = loader.getController();
             controller.setUsuarioLogado(usuarioLogado);
 
-            Stage stage = new Stage();
-            stage.setTitle("Exclusão de usuário");
+            Stage stage = (Stage) exportarPdfButton.getScene().getWindow();
             stage.setScene(new Scene(root));
+            stage.setTitle("Exclusão de usuário");
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
