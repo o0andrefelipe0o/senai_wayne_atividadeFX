@@ -49,6 +49,7 @@ public class LoginController {
                 Parent root = loader.load();
 
                 com.javafx.atividade_fx.Controller.ListaFuncionario controller = loader.getController();
+                controller.setUsuarioLogado(usuario);
 
                 controller.setUsuarioLogado(usuario);
 

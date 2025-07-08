@@ -44,6 +44,7 @@ public class ListaFuncionario {
     @FXML private TextField searchField;
     @FXML private Button exportarPdfButton;
     @FXML private MenuItem menuItemCadastrarUsuario;
+    @FXML private MenuItem menuItemExcluirUsuario;
     @FXML private AnchorPane rootPane;
 
     private Usuario usuarioLogado;
@@ -70,6 +71,7 @@ public class ListaFuncionario {
 
         if (usuarioLogado != null && !"admin".equalsIgnoreCase(usuarioLogado.getTipo())) {
             menuItemCadastrarUsuario.setVisible(false);
+            menuItemExcluirUsuario.setVisible(false);
         }
     }
 
@@ -376,6 +378,23 @@ public class ListaFuncionario {
 
             Stage stage = new Stage();
             stage.setTitle("Cadastro de usuário");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void handleExcluirUsuario(ActionEvent actionEvent) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/javafx/atividade_fx/ExcluirUsuario.fxml"));
+            Parent root = loader.load();
+
+            ExcluirUsuarioController controller = loader.getController();
+            controller.setUsuarioLogado(usuarioLogado);
+
+            Stage stage = new Stage();
+            stage.setTitle("Exclusão de usuário");
             stage.setScene(new Scene(root));
             stage.show();
         } catch (IOException e) {

@@ -67,6 +67,21 @@ public class UsuarioDAO {
         return false;
     }
 
+    public static boolean excluirUsuarioPorNome(String nomeUsuario) {
+        String sql = "DELETE FROM usuario WHERE usuario = ?";
+        try (Connection conn = Conexão.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, nomeUsuario);
+            int linhasAfetadas = stmt.executeUpdate();
+            return linhasAfetadas > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public Usuario buscarPorUsuarioESenha(String usuario, String senha) {
         String sql = "SELECT * FROM usuario WHERE usuario = ? AND senha = ?";
 

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1"
+            xmlns="http://javafx.com/javafx/17.0.6"
+            fx:controller="com.javafx.atividade_fx.Controller.ExcluirUsuarioController"
+            prefHeight="180.0" prefWidth="400.0">
+
+    <children>
+        <VBox spacing="15.0" alignment="CENTER" AnchorPane.topAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
+            <children>
+                <Label text="Excluir Usuário" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+
+                <TextField fx:id="usuarioField" promptText="Digite o nome do usuário a excluir" maxWidth="300.0" />
+
+                <HBox spacing="10" alignment="CENTER">
+                    <children>
+                        <Button text="Cancelar" onAction="#handleCancelar" />
+                        <Button text="Excluir" onAction="#handleExcluir" />
+                    </children>
+                </HBox>
+            </children>
+            <padding>
+                <Insets top="20" bottom="20" left="20" right="20"/>
+            </padding>
+        </VBox>
+    </children>
+</AnchorPane>

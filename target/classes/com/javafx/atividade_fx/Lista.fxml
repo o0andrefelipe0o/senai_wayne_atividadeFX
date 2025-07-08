@@ -15,6 +15,7 @@
                         <MenuButton mnemonicParsing="false" text="Menu">
                             <items>
                                 <MenuItem fx:id="menuItemCadastrarUsuario" text="Cadastrar novo usuário" onAction="#handleCadastrarNovoUsuario" />
+                                <MenuItem fx:id="menuItemExcluirUsuario" text="Excluir usuário" onAction="#handleExcluirUsuario" />
                                 <MenuItem text="Aniversariantes do Mês" onAction="#handleAbrirAniversariantes" />
                                 <MenuItem mnemonicParsing="false" onAction="#handleAbrirAgenda" text="Agenda de Eventos" />
                                 <MenuItem onAction="#handleAbrirCadastroFerias" text="Agendar Férias" />
