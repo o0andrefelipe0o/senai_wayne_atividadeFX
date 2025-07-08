@@ -45,11 +45,18 @@ public class LoginController {
 
         if (usuario != null) {
             try {
-                Parent root = FXMLLoader.load(getClass().getResource("/com/javafx/atividade_fx/Lista.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/javafx/atividade_fx/Lista.fxml"));
+                Parent root = loader.load();
+
+                com.javafx.atividade_fx.Controller.ListaFuncionario controller = loader.getController();
+
+                controller.setUsuarioLogado(usuario);
+
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 stage.setScene(new Scene(root));
                 stage.setTitle("Lista de Funcionários");
                 stage.show();
+
             } catch (Exception e) {
                 e.printStackTrace();
                 mostrarAlerta("Erro", "Não foi possível abrir a tela Lista.fxml", Alert.AlertType.ERROR);

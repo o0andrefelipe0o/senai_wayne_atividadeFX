@@ -2,6 +2,7 @@ package com.javafx.atividade_fx.Controller;
 
 import com.javafx.atividade_fx.DAO.FuncionarioDAO;
 import com.javafx.atividade_fx.model.Funcionario;
+import com.javafx.atividade_fx.model.Usuario;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -42,12 +43,35 @@ public class ListaFuncionario {
     @FXML private TableColumn<Funcionario, LocalDate> dataAdmissaoColumn;
     @FXML private TextField searchField;
     @FXML private Button exportarPdfButton;
-    @FXML
-    private AnchorPane rootPane;
+    @FXML private MenuItem menuItemCadastrarUsuario;
+    @FXML private AnchorPane rootPane;
 
+    private Usuario usuarioLogado;
 
     private final FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
     private List<Funcionario> todosOsFuncionarios;
+
+    @FXML
+    public void initialize() {
+
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        nomeColumn.setCellValueFactory(new PropertyValueFactory<>("nomeCompleto"));
+        cpfColumn.setCellValueFactory(new PropertyValueFactory<>("cpf"));
+        emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
+        departamentoColumn.setCellValueFactory(new PropertyValueFactory<>("departamento"));
+        cargoColumn.setCellValueFactory(new PropertyValueFactory<>("cargo"));
+        dataAdmissaoColumn.setCellValueFactory(new PropertyValueFactory<>("dataAdmissao"));
+
+        loadEmployeeData();
+    }
+
+    public void setUsuarioLogado(Usuario usuario) {
+        this.usuarioLogado = usuario;
+
+        if (usuarioLogado != null && !"admin".equalsIgnoreCase(usuarioLogado.getTipo())) {
+            menuItemCadastrarUsuario.setVisible(false);
+        }
+    }
 
     public void handleSair(ActionEvent event) {
         try {
@@ -62,20 +86,6 @@ public class ListaFuncionario {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    @FXML
-    public void initialize() {
-
-        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
-        nomeColumn.setCellValueFactory(new PropertyValueFactory<>("nomeCompleto"));
-        cpfColumn.setCellValueFactory(new PropertyValueFactory<>("cpf"));
-        emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
-        departamentoColumn.setCellValueFactory(new PropertyValueFactory<>("departamento"));
-        cargoColumn.setCellValueFactory(new PropertyValueFactory<>("cargo"));
-        dataAdmissaoColumn.setCellValueFactory(new PropertyValueFactory<>("dataAdmissao"));
-
-        loadEmployeeData();
     }
 
     private void loadEmployeeData() {
@@ -358,4 +368,18 @@ public class ListaFuncionario {
         }
     }
 
+    @FXML
+    private void handleCadastrarNovoUsuario() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/javafx/atividade_fx/CadastroUsuario.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = new Stage();
+            stage.setTitle("Cadastro de usuário");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

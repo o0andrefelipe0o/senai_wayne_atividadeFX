@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="10.0" alignment="CENTER" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.javafx.atividade_fx.Controller.CadastroUsuarioController"
+      xmlns="http://javafx.com/javafx/17.0.12"
+      prefWidth="300" prefHeight="200">
+
+    <Label text="Cadastro de Usuário" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+    <TextField fx:id="usuarioField" promptText="Usuário" />
+    <PasswordField fx:id="senhaField" promptText="Senha" />
+    <ChoiceBox fx:id="tipoChoiceBox" />
+    <Button text="Cadastrar" onAction="#handleCadastrar" />
+</VBox>

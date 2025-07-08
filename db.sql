@@ -6,8 +6,9 @@ USE wayne_enterprises_db;
 
 CREATE TABLE IF NOT EXISTS usuario (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    usuario VARCHAR(100),
-    senha VARCHAR(100)
+    usuario VARCHAR(100) NOT NULL UNIQUE,
+    senha VARCHAR(100) NOT NULL,
+    tipo ENUM('admin', 'normal') NOT NULL DEFAULT 'normal'
 );
 
 CREATE TABLE IF NOT EXISTS funcionarios (
@@ -30,8 +31,8 @@ CREATE TABLE IF NOT EXISTS ferias (
     FOREIGN KEY (funcionario_id) REFERENCES funcionarios(id) ON DELETE CASCADE
 );
 
-INSERT INTO usuario (usuario, senha)
-VALUES ('admin', 'admin');
+INSERT INTO usuario (usuario, senha, tipo)
+VALUES ('admin', 'admin','admin');
 
 INSERT INTO funcionarios (nome_completo, cpf, cargo, departamento, email, data_admissao, data_nascimento) VALUES
 ('Bruce Wayne', '123.456.789-00', 'CEO', 'Administração', 'bruce@wayneenterprises.com', '2010-05-01', '1972-07-07'),
@@ -56,6 +57,5 @@ INSERT INTO ferias (data_inicio, data_fim, observacao, funcionario_id) VALUES
 ('2024-08-11', '2024-08-26', 'Mudança de residência', 8),
 ('2024-09-01', '2024-09-16', 'Férias regulares', 9),
 ('2024-10-10', '2024-10-25', 'Projeto social voluntário', 10);
-
 
 SELECT*FROM funcionarios;
