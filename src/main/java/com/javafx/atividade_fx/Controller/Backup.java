@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import java.time.LocalDate;
 
 import java.io.*;
 import java.util.Properties;
@@ -45,41 +46,71 @@ public class Backup {
     private void fazerBackup() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Salvar Backup do Banco de Dados");
-        fileChooser.setInitialFileName("backup_wayne_enterprises.sql");
+        fileChooser.setInitialFileName("backup_" + Conexão.getNomeBanco() + "_" + LocalDate.now() + ".sql");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Arquivo SQL (*.sql)", "*.sql"));
         File file = fileChooser.showSaveDialog(getStage());
 
         if (file != null) {
             ProgressIndicator progressIndicator = showProgressDialog("Realizando Backup...");
 
-            Task<Boolean> backupTask = new Task<>() {
+            Task<String> backupTask = new Task<>() {
                 @Override
-                protected Boolean call() throws Exception {
-                    String dumpExecutable = mysqlBinPath + File.separator + "mysqldump.exe";
-                    String command = String.format("%s -u%s -p%s --databases %s --result-file=\"%s\"",
-                            dumpExecutable,
-                            Conexão.getUsuario(),
-                            Conexão.getSenha(),
-                            Conexão.getNomeBanco(),
-                            file.getAbsolutePath());
+                protected String call() throws Exception {
+                    // Validação do caminho configurado
+                    if (mysqlBinPath == null || mysqlBinPath.isBlank()) {
+                        throw new IOException("O caminho para a pasta 'bin' do MySQL não está configurado no arquivo config.properties.");
+                    }
 
-                    ProcessBuilder processBuilder = new ProcessBuilder("cmd.exe", "/c", command);
+                    String dumpExecutable = mysqlBinPath + File.separator + "mysqldump.exe";
+                    File dumpFile = new File(dumpExecutable);
+                    if (!dumpFile.exists()) {
+                        throw new IOException("O executável 'mysqldump.exe' não foi encontrado no caminho especificado: " + dumpExecutable);
+                    }
+
+                    ProcessBuilder processBuilder = new ProcessBuilder(
+                            dumpExecutable,
+                            "-u" + Conexão.getUsuario(),
+                            "--password=" + Conexão.getSenha(), // CORRETO
+                            "--databases",
+                            Conexão.getNomeBanco(),
+                            "--result-file", file.getAbsolutePath()
+                    );
+
+
+                    // --- CORREÇÃO PRINCIPAL: Redirecionar o stream de erro ---
+                    processBuilder.redirectErrorStream(true);
+
                     Process process = processBuilder.start();
-                    return process.waitFor() == 0;
+
+                    // --- Lógica para consumir a saída do processo ---
+                    StringBuilder output = new StringBuilder();
+                    try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+                        String line;
+                        while ((line = reader.readLine()) != null) {
+                            output.append(line).append("\n");
+                        }
+                    }
+
+                    int exitCode = process.waitFor();
+                    if (exitCode == 0) {
+                        return "Backup realizado com sucesso!";
+                    } else {
+                        // Se falhou, lança uma exceção com a mensagem de erro do mysqldump
+                        throw new IOException("O backup falhou (código de saída: " + exitCode + ").\nSaída do mysqldump:\n" + output);
+                    }
                 }
+
             };
 
             backupTask.setOnSucceeded(e -> {
                 closeProgressDialog(progressIndicator);
-                if (backupTask.getValue()) {
-                    showAlert(Alert.AlertType.INFORMATION, "Sucesso", "Backup realizado com sucesso!");
-                } else {
-                    showAlert(Alert.AlertType.ERROR, "Falha", "O backup falhou. Verifique o console.");
-                }
+                showAlert(Alert.AlertType.INFORMATION, "Sucesso", backupTask.getValue());
             });
+
             backupTask.setOnFailed(e -> {
                 closeProgressDialog(progressIndicator);
-                showAlert(Alert.AlertType.ERROR, "Erro", "Ocorreu um erro inesperado durante o backup.");
+                // Mostra o erro exato para o usuário
+                showAlert(Alert.AlertType.ERROR, "Erro no Backup", backupTask.getException().getMessage());
                 backupTask.getException().printStackTrace();
             });
 
@@ -89,9 +120,17 @@ public class Backup {
 
     @FXML
     private void restaurarBackup() {
-        // Implementação da restauração (ainda mais perigosa, requer confirmação)
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Selecionar Backup para Restaurar");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Arquivo SQL (*.sql)", "*.sql"));
+        File file = fileChooser.showOpenDialog(getStage());
+
+        if (file == null) {
+            return;
+        }
+
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION,
-                "ATENÇÃO: A restauração irá apagar todos os dados atuais e substituí-los pelos dados do backup. Deseja continuar?",
+                "ATENÇÃO: Esta operação substituirá os dados atuais do banco de dados '" + Conexão.getNomeBanco() + "'. Deseja continuar?",
                 ButtonType.YES, ButtonType.NO);
         confirm.setTitle("Confirmar Restauração");
 
@@ -99,9 +138,74 @@ public class Backup {
             return;
         }
 
-        // Lógica de restauração...
-        showAlert(Alert.AlertType.WARNING, "Não Implementado", "A função de restauração deve ser implementada com extremo cuidado.");
+        ProgressIndicator progressIndicator = showProgressDialog("Restaurando Backup...");
+
+        Task<String> restoreTask = new Task<>() {
+            @Override
+            protected String call() throws Exception {
+                if (mysqlBinPath == null || mysqlBinPath.isBlank()) {
+                    throw new IOException("Caminho do MySQL não configurado.");
+                }
+
+                String mysqlExecutable = mysqlBinPath + File.separator + "mysql.exe";
+                File mysqlFile = new File(mysqlExecutable);
+                if (!mysqlFile.exists()) {
+                    throw new IOException("Executável 'mysql.exe' não encontrado: " + mysqlExecutable);
+                }
+
+                ProcessBuilder processBuilder = new ProcessBuilder(
+                        mysqlExecutable,
+                        "-u" + Conexão.getUsuario(),
+                        "--password=" + Conexão.getSenha(),
+                        Conexão.getNomeBanco()
+                );
+
+                processBuilder.redirectErrorStream(true);
+
+                Process process = processBuilder.start();
+
+                try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()));
+                     BufferedReader reader = new BufferedReader(new FileReader(file))) {
+
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        writer.write(line);
+                        writer.newLine();
+                    }
+                    writer.flush();
+                }
+
+                StringBuilder output = new StringBuilder();
+                try (BufferedReader outReader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+                    String line;
+                    while ((line = outReader.readLine()) != null) {
+                        output.append(line).append("\n");
+                    }
+                }
+
+                int exitCode = process.waitFor();
+                if (exitCode == 0) {
+                    return "Backup restaurado com sucesso!";
+                } else {
+                    throw new IOException("Erro ao restaurar backup. Código de saída: " + exitCode + "\nSaída:\n" + output);
+                }
+            }
+        };
+
+        restoreTask.setOnSucceeded(e -> {
+            closeProgressDialog(progressIndicator);
+            showAlert(Alert.AlertType.INFORMATION, "Sucesso", restoreTask.getValue());
+        });
+
+        restoreTask.setOnFailed(e -> {
+            closeProgressDialog(progressIndicator);
+            showAlert(Alert.AlertType.ERROR, "Erro na Restauração", restoreTask.getException().getMessage());
+            restoreTask.getException().printStackTrace();
+        });
+
+        executorService.submit(restoreTask);
     }
+
 
     @FXML
     private void cancelar() {
@@ -135,4 +239,5 @@ public class Backup {
             ((Stage) pi.getScene().getWindow()).close();
         }
     }
+
 }

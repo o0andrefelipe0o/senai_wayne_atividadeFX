@@ -6,17 +6,9 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import com.javafx.atividade_fx.bancoDado.Conexão;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
-
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 public class Funcionario {
 
@@ -27,7 +19,7 @@ public class Funcionario {
     private final StringProperty cargo;
     private final StringProperty departamento;
     private final ObjectProperty<LocalDate> dataAdmissao;
-    private final ObjectProperty<LocalDate> dataNascimento;
+    private final ObjectProperty<LocalDate> dataNascimento; // CAMPO NOVO
 
     public Funcionario() {
         this.id = new SimpleIntegerProperty();
@@ -37,37 +29,7 @@ public class Funcionario {
         this.cargo = new SimpleStringProperty();
         this.departamento = new SimpleStringProperty();
         this.dataAdmissao = new SimpleObjectProperty<>();
-        this.dataNascimento = new SimpleObjectProperty<>();
-    }
-
-    public static List<Funcionario> getTodos() {
-        List<Funcionario> lista = new ArrayList<>();
-
-        String sql = "SELECT * FROM funcionarios";
-
-        try (Connection conn = Conexão.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
-
-            while (rs.next()) {
-                Funcionario f = new Funcionario();
-                f.setId(rs.getInt("id"));
-                f.setNomeCompleto(rs.getString("nome_completo"));
-                f.setCpf(rs.getString("cpf"));
-                f.setEmail(rs.getString("email"));
-                f.setCargo(rs.getString("cargo"));
-                f.setDepartamento(rs.getString("departamento"));
-                f.setDataAdmissao(rs.getDate("data_admissao").toLocalDate());
-                f.setDataNascimento(rs.getDate("data_nascimento").toLocalDate());
-
-                lista.add(f);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return lista;
+        this.dataNascimento = new SimpleObjectProperty<>(); // INICIALIZAÇÃO CORRETA
     }
 
 

@@ -12,7 +12,7 @@ public class HelloApplication extends Application {
     public void start(Stage primaryStage) {
         try {
 
-            FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("Home.fxml"));
+            FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("Lista.fxml"));
 
             Scene scene = new Scene(loader.load());
 
@@ -30,3 +30,4 @@ public class HelloApplication extends Application {
         launch(args);
     }
 }
+
