@@ -48,6 +48,8 @@ public class ListaFuncionario {
     @FXML private MenuItem menuItemExcluirUsuario;
     @FXML private AnchorPane rootPane;
 
+    private Stage cadastroUsuarioStage;
+
     private Usuario usuarioLogado;
 
     private final FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
@@ -82,6 +84,11 @@ public class ListaFuncionario {
             Parent root = loader.load();
 
             Stage stage = (Stage) exportarPdfButton.getScene().getWindow();
+
+            if (cadastroUsuarioStage != null && cadastroUsuarioStage.isShowing()) {
+                cadastroUsuarioStage.close();
+            }
+
             stage.setScene(new Scene(root));
             stage.setTitle("Wayne Enterprises - Início");
             stage.show();
@@ -377,10 +384,13 @@ public class ListaFuncionario {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/javafx/atividade_fx/CadastroUsuario.fxml"));
             Parent root = loader.load();
 
-            Stage stage = new Stage();
-            stage.setTitle("Cadastro de usuário");
-            stage.setScene(new Scene(root));
-            stage.show();
+            cadastroUsuarioStage = new Stage();
+            cadastroUsuarioStage.setTitle("Cadastro de usuário");
+            cadastroUsuarioStage.setScene(new Scene(root));
+            cadastroUsuarioStage.show();
+
+            cadastroUsuarioStage.setOnHidden(e -> cadastroUsuarioStage = null);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
