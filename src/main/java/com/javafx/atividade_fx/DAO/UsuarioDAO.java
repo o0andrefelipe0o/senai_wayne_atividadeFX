@@ -26,6 +26,7 @@ public class UsuarioDAO {
                 u.setId(rs.getInt("id"));
                 u.setUsuario(rs.getString("usuario"));
                 u.setSenha(rs.getString("senha"));
+                u.setTipo(rs.getString("tipo")); // novo campo adicionado
                 return u;
             }
 
@@ -34,5 +35,42 @@ public class UsuarioDAO {
         }
 
         return null;
+    }
+
+    public static boolean salvar(String usuario, String senha, String tipo) {
+        String sql = "INSERT INTO usuario (usuario, senha, tipo) VALUES (?, ?, ?)";
+
+        try (Connection conn = Conexão.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, usuario);
+            stmt.setString(2, senha); // ideal: aplicar hash
+            stmt.setString(3, tipo);
+
+            stmt.executeUpdate();
+            return true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static boolean jaExisteAdmin() {
+        String sql = "SELECT COUNT(*) FROM usuario WHERE tipo = 'admin'";
+
+        try (Connection conn = Conexão.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
 }

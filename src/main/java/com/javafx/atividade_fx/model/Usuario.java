@@ -10,11 +10,13 @@ public class Usuario {
     private final IntegerProperty id;
     private final StringProperty usuario;
     private final StringProperty senha;
+    private final StringProperty tipo;
 
     public Usuario() {
         this.id = new SimpleIntegerProperty();
         this.usuario = new SimpleStringProperty();
         this.senha = new SimpleStringProperty();
+        this.tipo = new SimpleStringProperty();
     }
 
     // Getters e Setters
@@ -42,6 +44,14 @@ public class Usuario {
         this.senha.set(senha);
     }
 
+    public String getTipo() {
+        return tipo.get();
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo.set(tipo);
+    }
+
     // Property methods
     public IntegerProperty idProperty() {
         return id;
@@ -53,5 +63,9 @@ public class Usuario {
 
     public StringProperty senhaProperty() {
         return senha;
+    }
+
+    public StringProperty tipoProperty() {
+        return tipo;
     }
 }

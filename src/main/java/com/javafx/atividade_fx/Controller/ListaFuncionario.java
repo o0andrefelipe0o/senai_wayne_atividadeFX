@@ -44,6 +44,7 @@ public class ListaFuncionario {
     @FXML private Button exportarPdfButton;
     @FXML
     private AnchorPane rootPane;
+    @FXML private MenuButton menuButton;
 
 
     private final FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
@@ -75,7 +76,32 @@ public class ListaFuncionario {
         cargoColumn.setCellValueFactory(new PropertyValueFactory<>("cargo"));
         dataAdmissaoColumn.setCellValueFactory(new PropertyValueFactory<>("dataAdmissao"));
 
+        if (com.javafx.atividade_fx.util.Sessao.getUsuarioLogado() != null && "admin".equals(com.javafx.atividade_fx.util.Sessao.getUsuarioLogado().getTipo())) {
+            MenuItem cadastroUsuarioItem = new MenuItem("Cadastrar Usuário");
+            cadastroUsuarioItem.setOnAction(e -> handleAbrirCadastroUsuario());
+            menuButton.getItems().add(0, cadastroUsuarioItem);
+        }
+
         loadEmployeeData();
+    }
+
+    @FXML
+    private void handleAbrirCadastroUsuario() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/javafx/atividade_fx/CadastroUsuario.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = new Stage();
+            stage.setTitle("Cadastro de Usuário");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Erro ao abrir tela de cadastro de usuário.");
+            alert.showAndWait();
+        }
     }
 
     private void loadEmployeeData() {

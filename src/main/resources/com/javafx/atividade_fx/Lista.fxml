@@ -12,7 +12,7 @@
                 <HBox>
                     <children>
 
-                        <MenuButton mnemonicParsing="false" text="Menu">
+                        <MenuButton fx:id="menuButton" mnemonicParsing="false" text="Menu">
                             <items>
                                 <MenuItem text="Aniversariantes do Mês" onAction="#handleAbrirAniversariantes" />
                                 <MenuItem mnemonicParsing="false" onAction="#handleAbrirAgenda" text="Agenda de Eventos" />

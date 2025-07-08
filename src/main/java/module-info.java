@@ -9,5 +9,6 @@ module com.javafx.atividade_fx {
     exports com.javafx.atividade_fx;
     exports com.javafx.atividade_fx.Controller;
     exports com.javafx.atividade_fx.model;
+    exports com.javafx.atividade_fx.util;
     requires org.apache.pdfbox;
 }

@@ -6,8 +6,9 @@ USE wayne_enterprises_db;
 
 CREATE TABLE IF NOT EXISTS usuario (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    usuario VARCHAR(100),
-    senha VARCHAR(100)
+    usuario VARCHAR(100) NOT NULL UNIQUE,
+    senha VARCHAR(100) NOT NULL,
+    tipo ENUM('admin', 'normal') NOT NULL DEFAULT 'normal'
 );
 
 CREATE TABLE IF NOT EXISTS funcionarios (
@@ -31,7 +32,7 @@ CREATE TABLE IF NOT EXISTS ferias (
 );
 
 INSERT INTO usuario (usuario, senha)
-VALUES ('admin', 'admin');
+VALUES ('admin', 'admin','admin');
 
 INSERT INTO funcionarios (nome_completo, cpf, cargo, departamento, email, data_admissao, data_nascimento) VALUES
 ('Bruce Wayne', '123.456.789-00', 'CEO', 'Administração', 'bruce@wayneenterprises.com', '2010-05-01', '1972-07-07'),
