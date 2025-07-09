@@ -46,16 +46,5 @@ INSERT INTO funcionarios (nome_completo, cpf, cargo, departamento, email, data_a
 ('Dick Grayson', '951.753.852-00', 'Coordenador de Projetos', 'Operações', 'dick@wayneenterprises.com', '2016-06-30', '1992-03-15'),
 ('Jason Todd', '159.753.456-00', 'Analista de Qualidade', 'Controle', 'jason@wayneenterprises.com', '2021-01-18', '1995-12-01');
 
-INSERT INTO ferias (data_inicio, data_fim, observacao, funcionario_id) VALUES
-('2024-01-10', '2024-01-25', 'Viagem para Europa', 1),
-('2024-02-05', '2024-02-20', 'Descanso anual', 2),
-('2024-03-01', '2024-03-15', 'Visita à família', 3),
-('2024-04-12', '2024-04-27', 'Tratamento de saúde', 4),
-('2024-05-10', '2024-05-25', 'Férias programadas', 5),
-('2024-06-01', '2024-06-16', 'Curso de aperfeiçoamento', 6),
-('2024-07-05', '2024-07-20', 'Viagem com amigos', 7),
-('2024-08-11', '2024-08-26', 'Mudança de residência', 8),
-('2024-09-01', '2024-09-16', 'Férias regulares', 9),
-('2024-10-10', '2024-10-25', 'Projeto social voluntário', 10);
 
-SELECT*FROM funcionarios;
+

@@ -2,12 +2,17 @@ package com.javafx.atividade_fx.Controller;
 
 import com.javafx.atividade_fx.DAO.FuncionarioDAO;
 import com.javafx.atividade_fx.model.Funcionario;
+import com.javafx.atividade_fx.model.Usuario;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -39,6 +44,13 @@ public class ListaFuncionario {
     @FXML private TableColumn<Funcionario, LocalDate> dataAdmissaoColumn;
     @FXML private TextField searchField;
     @FXML private Button exportarPdfButton;
+    @FXML private MenuItem menuItemCadastrarUsuario;
+    @FXML private MenuItem menuItemExcluirUsuario;
+    @FXML private AnchorPane rootPane;
+
+    private Stage cadastroUsuarioStage;
+
+    private Usuario usuarioLogado;
 
     private final FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
     private List<Funcionario> todosOsFuncionarios;
@@ -55,6 +67,35 @@ public class ListaFuncionario {
         dataAdmissaoColumn.setCellValueFactory(new PropertyValueFactory<>("dataAdmissao"));
 
         loadEmployeeData();
+    }
+
+    public void setUsuarioLogado(Usuario usuario) {
+        this.usuarioLogado = usuario;
+
+        if (usuarioLogado != null && !"admin".equalsIgnoreCase(usuarioLogado.getTipo())) {
+            menuItemCadastrarUsuario.setVisible(false);
+            menuItemExcluirUsuario.setVisible(false);
+        }
+    }
+
+    public void handleSair(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/javafx/atividade_fx/Home.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = (Stage) exportarPdfButton.getScene().getWindow();
+
+            if (cadastroUsuarioStage != null && cadastroUsuarioStage.isShowing()) {
+                cadastroUsuarioStage.close();
+            }
+
+            stage.setScene(new Scene(root));
+            stage.setTitle("Wayne Enterprises - Início");
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void loadEmployeeData() {
@@ -317,6 +358,57 @@ public class ListaFuncionario {
             stage.setScene(new Scene(loader.load()));
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void handleAbrirAniversariantes() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/javafx/atividade_fx/Aniversariantes.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = new Stage();
+            stage.setTitle("Aniversariantes do Mês");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void handleCadastrarNovoUsuario() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/javafx/atividade_fx/CadastroUsuario.fxml"));
+            Parent root = loader.load();
+
+            cadastroUsuarioStage = new Stage();
+            cadastroUsuarioStage.setTitle("Cadastro de usuário");
+            cadastroUsuarioStage.setScene(new Scene(root));
+            cadastroUsuarioStage.show();
+
+            cadastroUsuarioStage.setOnHidden(e -> cadastroUsuarioStage = null);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void handleExcluirUsuario(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/javafx/atividade_fx/ExcluirUsuario.fxml"));
+            Parent root = loader.load();
+
+            // Pega o controller e injeta o usuário logado
+            ExcluirUsuarioController controller = loader.getController();
+            controller.setUsuarioLogado(usuarioLogado);
+
+            Stage stage = (Stage) exportarPdfButton.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Exclusão de usuário");
+            stage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }

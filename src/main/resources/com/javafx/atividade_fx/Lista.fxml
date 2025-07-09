@@ -14,12 +14,15 @@
 
                         <MenuButton mnemonicParsing="false" text="Menu">
                             <items>
+                                <MenuItem fx:id="menuItemCadastrarUsuario" text="Cadastrar novo usuário" onAction="#handleCadastrarNovoUsuario" />
+                                <MenuItem fx:id="menuItemExcluirUsuario" text="Excluir usuário" onAction="#handleExcluirUsuario" />
+                                <MenuItem text="Aniversariantes do Mês" onAction="#handleAbrirAniversariantes" />
                                 <MenuItem mnemonicParsing="false" onAction="#handleAbrirAgenda" text="Agenda de Eventos" />
                                 <MenuItem onAction="#handleAbrirCadastroFerias" text="Agendar Férias" />
                                 <MenuItem onAction="#handleAbrirListaFerias" text="Ver Histórico de Férias" />
                                 <MenuItem onAction="#handleAbrirRelatorioGrafico" text="Gráfico por Departamento" />
                                 <MenuItem text="Backup / Restauração" onAction="#handleAbrirBackup"/>
-                                <MenuItem mnemonicParsing="false" text="Sair" />
+                                <MenuItem mnemonicParsing="false" text="Sair" onAction="#handleSair" />
                             </items>
                         </MenuButton>
                         <Region prefHeight="40.0" prefWidth="90.0" />
