@@ -64,7 +64,7 @@ Para executar este projeto, você precisará ter instalado em seu ambiente:
 **Clone o repositório:**
 
 ```javascript
-git clone https://github.com/seu-usuario/nome-do-repositorio.git
+git clone https:https://github.com/o0andrefelipe0o/senai_wayne_atividadeFX
 
 ```
 
